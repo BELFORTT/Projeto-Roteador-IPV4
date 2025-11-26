@@ -1,0 +1,14 @@
+Deseja-se implementar um simulador de roteador IP utilizando-se a linguagem de programação Java. O simulador
+deve ser capaz de configurar sua tabela de rotas e, recebendo um número IP, indicar por qual interface o datagrama
+seria entregue.
+Uma rota é definida como sendo um registro das seguintes informações: endereço de destino, endereço do gateway,
+máscara de sub-rede e interface. Uma tabela de rotas é um conjunto destes registros. Exemplo de tabela de rotas:
+
+Destination       Gateway       Mask            Interface
+127.0.0.1        127.0.0.1    255.0.0.0            lo0
+10.0.2.0         10.0.2.2     255.255.255.0        eth0
+10.0.3.0         10.0.3.2     255.255.255.0        eth1
+10.0.1.0         10.0.2.1     255.255.255.0        eth0
+10.0.4.0         10.0.3.3     255.255.255.0        eth1
+0.0.0.0          10.0.3.3     0.0.0.0              eth1
+10.0.3.22        10.0.3.2     255.255.255.255      eth0
