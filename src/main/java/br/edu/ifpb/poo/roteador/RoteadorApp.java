@@ -1,0 +1,7 @@
+package br.edu.ifpb.poo.roteador;
+
+// import java.util.Scanner
+
+public class RoteadorApp {
+    
+}
