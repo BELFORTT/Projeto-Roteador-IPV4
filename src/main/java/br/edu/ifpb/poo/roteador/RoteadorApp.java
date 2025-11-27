@@ -4,6 +4,10 @@ package br.edu.ifpb.poo.roteador;
 
 public class RoteadorApp {
     public static void main(String[] args) {
-        
-    } 
+    
+    }
+
+    // UC06
+
+    // UC08
 }
