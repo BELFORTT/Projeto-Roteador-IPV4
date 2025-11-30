@@ -7,9 +7,11 @@ import lombok.Setter;
 @Setter
 public class InterfaceFisica {
     String nome;
-    String ip;
+    Byte ip;
 
-    public InterfaceFisica(String nome, String ip) {
+    // Vamos ter que dividir o IP em quatro octetos. Analisar se terá aqui mesmo. 
+
+    public InterfaceFisica(String nome, Byte ip) {
         this.nome = nome;
         this.ip = ip;
     }

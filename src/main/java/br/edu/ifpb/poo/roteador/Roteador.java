@@ -14,7 +14,7 @@ public class Roteador {
     }
 
     //Método UC01
-    public boolean cadastrarInterface(String nome, String ip) {
+    public boolean cadastrarInterface(String nome, Byte ip) {
 
         for (InterfaceFisica interfaceF : this.interfaces) {
             if (interfaceF.getNome().equalsIgnoreCase(nome)) {
