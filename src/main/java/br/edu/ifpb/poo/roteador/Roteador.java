@@ -14,15 +14,12 @@ public class Roteador {
     }
 
     //Método UC01
-    public boolean cadastrarInterface(String nome, Byte ip) {
-
+    public boolean cadastrarInterface(String nome, String ip) {
         for (InterfaceFisica interfaceF : this.interfaces) {
             if (interfaceF.getNome().equalsIgnoreCase(nome)) {
                 return false;
             } 
         }
-
-        // Cadastra a Interface se não existir uma com o nome passado
         InterfaceFisica novaInterface = new InterfaceFisica(nome, ip);
         this.interfaces.add(novaInterface);
         return true;
