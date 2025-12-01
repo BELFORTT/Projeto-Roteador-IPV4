@@ -6,16 +6,22 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Rota {
-    private String enderecoDestino;
-    private String enderecoGateway;
-    private String mascaraDeSubRede;
+    private byte[] enderecoDestino;
+    private byte[] enderecoGateway;
+    private byte[] mascaraDeSubRede;
     private InterfaceFisica interfac;
 
     public Rota(String destino, String gateway, String mascara, InterfaceFisica interfac) {
-        this.enderecoDestino = destino;
-        this.enderecoGateway = gateway;
-        this.mascaraDeSubRede = mascara;
+        this.enderecoDestino = IpUtils.stringPraBytes(destino);
+            
+        // Gateway pode ser vazio em alguns casos, tratamos isso
+        if (gateway != null && !gateway.isEmpty()) {
+                this.enderecoGateway = IpUtils.stringPraBytes(gateway);
+        } else {
+            this.enderecoGateway = new byte[4]; // 0.0.0.0
+        }
+            
+        this.mascaraDeSubRede = IpUtils.stringPraBytes(mascara);
         this.interfac = interfac;
-    }
-
+        }
 }
