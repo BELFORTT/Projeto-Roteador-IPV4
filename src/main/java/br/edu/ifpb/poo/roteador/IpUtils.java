@@ -12,14 +12,14 @@ public class IpUtils{
         }
         return bytes;
     }
-    public static String bytesparaString(byte[] ipBytes){
+    public static String bytesParaString(byte[] ipBytes){
         String ipFormatado = "";
 
         for (int i = 0; i<4;i++){
         int valorPositivo = ipBytes[i] & 0xFF;
         ipFormatado += valorPositivo;
         
-        if (i>3){
+        if (i<3){
             ipFormatado+= ".";
         }
     }

@@ -27,27 +27,46 @@ public class RoteadorApp {
                     System.out.print("Digite o nome da interface: ");
                     String nome = in.next();
                     System.out.print("Digite o ip da interface: ");
-                    Byte ip = in.nextByte();
-                    roteador.cadastrarInterface(nome, ip);
+                    String ip = in.next();
+                    System.out.println(roteador.cadastrarInterface(nome, ip));
+                    
                 }
                 case 2 -> {
-                    System.out.println("Digite o destino: ");
-                    System.out.println("Digite o gateway: ");
-                    System.out.println("Digite a mascara");
-                    // Como vou pegar a interface correta?
+                    System.out.print("Destino: ");
+                    String destino = in.next();
+                    System.out.print("Gateway: ");
+                    String gateway = in.next();
+                    System.out.print("Mascara: ");
+                    String mascara = in.next();
+                    System.out.print("Nome da interface: ");
+                    String nomeInterface = in.next();
 
-                    roteador.cadastrarRota(null, null, null, null);
+                    InterfaceFisica interfac = roteador.buscarInterface(nomeInterface);
+
+                    if (interfac != null) {
+                        boolean tudoCerto =  roteador.cadastrarRota(destino, gateway, mascara, interfac);
+
+                        if (tudoCerto) {
+                            System.out.println("Rota cadastrada com sucesso.");
+                        } else {
+                            System.out.println("Essa rota já existe.");
+                        }
+                    } else {
+                        System.out.println("Interface não encontrada. Rota não foi cadastrada.");
+                    }
                 }
-                case 3 -> System.out.println("Teste");
-                case 4 -> System.out.println("Teste");
-                case 5 -> System.out.println("Teste");
-                case 6 -> System.out.println("Teste");
-                case 7 -> System.out.println("Teste");
-                case 8 -> System.out.println("Teste");
+                case 3 -> System.out.println(roteador.visualizaTabelaDeRotas());
+                
+                case 4 -> System.out.print("Teste");
+                case 5 -> System.out.print("Teste");
+                case 6 -> System.out.print("Teste");
+                case 7 -> System.out.print("Teste");
+                case 8 -> System.out.print("Teste");
                 case 0 -> {
                     break OUTER;
                 }
                 default -> {
+                    System.out.println("Valor inválido. Tente novamente.");
                 }
             }
         }
@@ -55,7 +74,4 @@ public class RoteadorApp {
         in.close();
     }
 
-    // UC06
-
-    // UC08
 }

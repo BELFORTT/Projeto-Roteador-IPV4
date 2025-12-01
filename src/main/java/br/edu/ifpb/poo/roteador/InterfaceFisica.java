@@ -16,6 +16,6 @@ public class InterfaceFisica {
         this.ip = IpUtils.stringPraBytes(ipString);
     }
     public String toString() {
-        return "Interface: " + nome + " | IP: " + IpUtils.bytesparaString(ip);
+        return "Interface: " + nome + " | IP: " + IpUtils.bytesParaString(ip);
     }
 }

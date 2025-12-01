@@ -1,6 +1,7 @@
 package br.edu.ifpb.poo.roteador;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import lombok.Getter;
 
 @Getter
@@ -25,11 +26,22 @@ public class Roteador {
         return true;
     }
 
+    public InterfaceFisica buscarInterface(String nome) {
+        for (InterfaceFisica interfac : this.interfaces) {
+            if (interfac.getNome().equalsIgnoreCase(nome)) {
+                return interfac;
+            }
+        }
+        return null;
+    }
+
     // Método UC02
     public boolean cadastrarRota(String destino, String gateway, String mascara, InterfaceFisica interfac) {
-        
-        for (Rota rotas : this.rotas) {
-            if (rotas.getEnderecoDestino().equals(destino) && rotas.getMascaraDeSubRede().equals(mascara) && rotas.getInterfac().equals(interfac)) {
+        byte[] destinoByte = IpUtils.stringPraBytes(destino);
+        byte[] mascaraByte = IpUtils.stringPraBytes(mascara);
+
+        for (Rota rota : this.rotas) {
+            if (Arrays.equals(rota.getEnderecoDestino(), destinoByte) && Arrays.equals(rota.getMascaraDeSubRede(), mascaraByte) && rota.getInterfac().equals(interfac)) {
                 return false;
             }
         }
@@ -40,10 +52,55 @@ public class Roteador {
     }
 
     // Método UC03
+    public String visualizaTabelaDeRotas() {
+        if (this.rotas.isEmpty()) {
+            return "Tabela de rotas vazia";
+        }
 
+        String tabela = "";
+
+        tabela += "================================================================================\n";
+        tabela += "| " + String.format("%-18s", "Destino") + " | ";
+        tabela += String.format("%-18s", "Máscara") + " | ";
+        tabela += String.format("%-18s", "Gateway") + " | ";
+        tabela += String.format("%-10s", "Interface") + " |\n";
+        tabela += "================================================================================\n";
+
+        for (Rota rota : this.rotas) {
+            String destino = IpUtils.bytesParaString(rota.getEnderecoDestino());
+            String mascara = IpUtils.bytesParaString(rota.getMascaraDeSubRede());
+            String gateway;
+
+            if (IpUtils.bytesParaString(rota.getEnderecoGateway()).equals("0.0.0.0")) {
+                gateway = "-";
+            } else {
+                gateway = IpUtils.bytesParaString(rota.getEnderecoGateway());
+            }
+
+            String nomeInterface = rota.getInterfac().getNome();
+
+            tabela += "| " + String.format("%-18s", destino) + " | ";
+            tabela += String.format("%-18s", mascara) + " | ";
+            tabela += String.format("%-18s", gateway) + " | ";
+            tabela += String.format("%-10s", nomeInterface) + " |\n";
+        }
+
+        tabela += "================================================================================";
+
+        return tabela;
+
+    }
     // Método UC04
-
+    public boolean alterarRota() {
+        return true;
+    }
     // Método UC05
+    public boolean excluiRota() {
+        return true;
+    }
 
+    // Método UC06
+    
     // Método UC07
+
 }
