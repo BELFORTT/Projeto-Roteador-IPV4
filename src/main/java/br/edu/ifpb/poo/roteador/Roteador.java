@@ -91,8 +91,36 @@ public class Roteador {
 
     }
     // Método UC04
-    public boolean alterarRota() {
-        return true;
+    public Rota alterarRota(int indiceRota, String novoDestino, String novoGateway, String novaMascara, String nomeNovaInterface) {
+        Rota rotaAntiga = this.rotas.get(indiceRota);
+
+        String destinoString = novoDestino.isEmpty() ? IpUtils.bytesParaString(rotaAntiga.getEnderecoDestino()) : novoDestino;
+
+        String mascaraString = novaMascara.isEmpty() ? IpUtils.bytesParaString(rotaAntiga.getMascaraDeSubRede()) : novaMascara;
+
+        String gatewayString = novoGateway.isEmpty() ? IpUtils.bytesParaString(rotaAntiga.getEnderecoGateway()) : novoGateway;
+
+        InterfaceFisica interfaceAntiga = rotaAntiga.getInterfac();
+        InterfaceFisica interfaceFinal;
+
+        if (nomeNovaInterface.isEmpty()) {
+            interfaceFinal = interfaceAntiga;
+        } else {
+            InterfaceFisica interfaceBuscada = buscarInterface(nomeNovaInterface);
+
+            if (interfaceBuscada == null) {
+                System.out.println("Não foi encontrada a interface. Deixaremos a antiga!");
+                interfaceFinal = interfaceAntiga;
+            } else {
+                interfaceFinal = interfaceBuscada;
+            }
+        }
+
+        Rota novaRota = new Rota(destinoString, gatewayString, mascaraString, interfaceFinal);
+
+        this.rotas.set(indiceRota, novaRota);
+
+        return novaRota;
     }
     // Método UC05
     public boolean excluiRota() {

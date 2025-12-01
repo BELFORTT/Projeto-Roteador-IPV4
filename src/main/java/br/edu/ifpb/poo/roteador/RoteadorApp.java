@@ -55,13 +55,63 @@ public class RoteadorApp {
                         System.out.println("Interface não encontrada. Rota não foi cadastrada.");
                     }
                 }
-                case 3 -> System.out.println(roteador.visualizaTabelaDeRotas());
-                
-                case 4 -> System.out.print("Teste");
-                case 5 -> System.out.print("Teste");
-                case 6 -> System.out.print("Teste");
-                case 7 -> System.out.print("Teste");
-                case 8 -> System.out.print("Teste");
+                case 3 -> {
+                    System.out.println(roteador.visualizaTabelaDeRotas());
+                }
+
+                case 4 -> {
+                    if (roteador.getRotas().isEmpty()) {
+                        System.out.print("Tabela de Rotas vazia");
+                    }
+
+                    System.out.println(roteador.visualizaTabelaDeRotas());
+
+                    int numRotas = roteador.getRotas().size();
+
+                    System.out.print("Digite o número da rota que deseja alterar (1 a " + numRotas + "): ");
+
+                    int indice = in.nextInt();
+                    in.nextLine();
+
+                    int indiceArray = indice - 1;
+
+                    if (indiceArray < 0 || indiceArray >= numRotas) {
+                        System.out.println("Número de rota inválido");
+                        break;
+                    }
+
+                    Rota rotaAtual = roteador.getRotas().get(indiceArray);
+
+                    System.out.println("Destino atual: " + IpUtils.bytesParaString(rotaAtual.getEnderecoDestino()));
+                    System.out.print("Novo Destino (enter para manter): \n");
+                    String novoDestino = in.nextLine().trim();
+
+                    System.out.println("Máscara atual: " + IpUtils.bytesParaString(rotaAtual.getMascaraDeSubRede()));
+                    System.out.print("Nova Mascara (enter para manter): \n");
+                    String novaMascara= in.nextLine().trim();
+
+                    System.out.println("Gateway atual: " + IpUtils.bytesParaString(rotaAtual.getEnderecoGateway()));
+                    System.out.print("Novo Gateway (enter para manter): \n");
+                    String novoGateway = in.nextLine().trim();
+
+                    System.out.println("Interface atual: " + rotaAtual.getInterfac().getNome());
+                    System.out.print("Nova Interface (Enter para manter): \n");
+                    String nomeNovaInterface = in.nextLine().trim();
+                    
+                    Rota rotaAlterada = roteador.alterarRota(indiceArray, novoDestino, novoGateway, novaMascara, nomeNovaInterface);
+
+                    if (rotaAlterada != null) {
+                        System.out.println("\nRota atualizada com sucesso!");
+                    } else {
+                        System.out.println("Falha na alteração");
+                    }
+                }
+
+
+                case 5 -> System.out.println("Teste");
+                case 6 -> System.out.println("Teste");
+                case 7 -> System.out.println("Teste");
+                case 8 -> System.out.println("Teste");
                 case 0 -> {
                     break OUTER;
                 }
