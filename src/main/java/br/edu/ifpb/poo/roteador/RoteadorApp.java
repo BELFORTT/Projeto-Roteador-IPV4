@@ -56,59 +56,100 @@ public class RoteadorApp {
                     }
                 }
                 case 3 -> {
-                    System.out.println(roteador.visualizaTabelaDeRotas());
+                    System.out.println(roteador.visualizarTabelaDeRotas());
                 }
 
                 case 4 -> {
                     if (roteador.getRotas().isEmpty()) {
-                        System.out.print("Tabela de Rotas vazia");
-                    }
-
-                    System.out.println(roteador.visualizaTabelaDeRotas());
-
-                    int numRotas = roteador.getRotas().size();
-
-                    System.out.print("Digite o número da rota que deseja alterar (1 a " + numRotas + "): ");
-
-                    int indice = in.nextInt();
-                    in.nextLine();
-
-                    int indiceArray = indice - 1;
-
-                    if (indiceArray < 0 || indiceArray >= numRotas) {
-                        System.out.println("Número de rota inválido");
-                        break;
-                    }
-
-                    Rota rotaAtual = roteador.getRotas().get(indiceArray);
-
-                    System.out.println("Destino atual: " + IpUtils.bytesParaString(rotaAtual.getEnderecoDestino()));
-                    System.out.print("Novo Destino (enter para manter): \n");
-                    String novoDestino = in.nextLine().trim();
-
-                    System.out.println("Máscara atual: " + IpUtils.bytesParaString(rotaAtual.getMascaraDeSubRede()));
-                    System.out.print("Nova Mascara (enter para manter): \n");
-                    String novaMascara= in.nextLine().trim();
-
-                    System.out.println("Gateway atual: " + IpUtils.bytesParaString(rotaAtual.getEnderecoGateway()));
-                    System.out.print("Novo Gateway (enter para manter): \n");
-                    String novoGateway = in.nextLine().trim();
-
-                    System.out.println("Interface atual: " + rotaAtual.getInterfac().getNome());
-                    System.out.print("Nova Interface (Enter para manter): \n");
-                    String nomeNovaInterface = in.nextLine().trim();
-                    
-                    Rota rotaAlterada = roteador.alterarRota(indiceArray, novoDestino, novoGateway, novaMascara, nomeNovaInterface);
-
-                    if (rotaAlterada != null) {
-                        System.out.println("\nRota atualizada com sucesso!");
+                        System.out.println("Tabela de Rotas vazia");
                     } else {
-                        System.out.println("Falha na alteração");
+                        System.out.println(roteador.visualizarTabelaDeRotas());
+
+                        int numRotas = roteador.getRotas().size();
+
+                        System.out.print("Digite o número da rota que deseja alterar (1 a " + numRotas + "): ");
+
+                        int indice = in.nextInt();
+                        in.nextLine();
+
+                        int indiceArray = indice - 1;
+
+                        if (indiceArray < 0 || indiceArray >= numRotas) {
+                            System.out.println("Número de rota inválido");
+                            break;
+                        }
+
+                        Rota rotaAtual = roteador.getRotas().get(indiceArray);
+
+                        System.out.println("Destino atual: " + IpUtils.bytesParaString(rotaAtual.getEnderecoDestino()));
+                        System.out.print("Novo Destino (enter para manter): \n");
+                        String novoDestino = in.nextLine().trim();
+
+                        System.out.println("Máscara atual: " + IpUtils.bytesParaString(rotaAtual.getMascaraDeSubRede()));
+                        System.out.print("Nova Mascara (enter para manter): \n");
+                        String novaMascara= in.nextLine().trim();
+
+                        System.out.println("Gateway atual: " + IpUtils.bytesParaString(rotaAtual.getEnderecoGateway()));
+                        System.out.print("Novo Gateway (enter para manter): \n");
+                        String novoGateway = in.nextLine().trim();
+
+                        System.out.println("Interface atual: " + rotaAtual.getInterfac().getNome());
+                        System.out.print("Nova Interface (Enter para manter): \n");
+                        String nomeNovaInterface = in.nextLine().trim();
+                        
+                        Rota rotaAlterada = roteador.alterarRota(indiceArray, novoDestino, novoGateway, novaMascara, nomeNovaInterface);
+
+                        if (rotaAlterada != null) {
+                            System.out.println("\nRota atualizada com sucesso!");
+                        } else {
+                            System.out.println("Falha na alteração");
+                        }
                     }
                 }
 
 
-                case 5 -> System.out.println("Teste");
+                case 5 -> {
+                    if (roteador.getRotas().isEmpty()) {
+                        System.out.println("Tabela de Rotas vazia");
+                    } else {
+                        System.out.println(roteador.visualizarTabelaDeRotas());
+
+                        int numRotas = roteador.getRotas().size();
+
+                        System.out.print("Digite o número da rota que deseja excluir (1 a " + numRotas + "): ");
+
+                        int indice = in.nextInt();
+                        in.nextLine();
+
+                        int indiceArray = indice - 1;
+
+                        if (indiceArray < 0 || indiceArray >= numRotas) {
+                            System.out.println("Número de rota inválido");
+                            break;
+                        }
+
+                        Rota rotaExcluir = roteador.getRotas().get(indiceArray);
+
+                        System.out.println("Confirmar a exclusão da Rota: ");
+                        System.out.println("Destino: " + IpUtils.bytesParaString(rotaExcluir.getEnderecoDestino()));
+                        System.out.println("Máscara: " + IpUtils.bytesParaString(rotaExcluir.getMascaraDeSubRede()));
+                        System.out.println("Interface: " + rotaExcluir.getInterfac().getNome());
+
+                        System.out.print("Confirma a exclusão? (S/N): ");
+                        
+                        String confirmacao = in.nextLine().trim().toUpperCase();
+
+                        if (confirmacao.equals("S")) {
+                            roteador.excluirRota(indiceArray);
+                            System.out.println("Rota excluída com sucesso!");
+                        } else {
+                            System.out.println("Exclusão cancelada pelo usuário.");
+                        }
+                    }
+
+                    
+                }
+
                 case 6 -> System.out.println("Teste");
                 case 7 -> System.out.println("Teste");
                 case 8 -> System.out.println("Teste");

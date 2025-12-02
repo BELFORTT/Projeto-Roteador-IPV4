@@ -52,7 +52,7 @@ public class Roteador {
     }
 
     // Método UC03
-    public String visualizaTabelaDeRotas() {
+    public String visualizarTabelaDeRotas() {
         if (this.rotas.isEmpty()) {
             return "Tabela de rotas vazia";
         }
@@ -123,8 +123,8 @@ public class Roteador {
         return novaRota;
     }
     // Método UC05
-    public boolean excluiRota() {
-        return true;
+    public Rota excluirRota(int indice) {
+        return this.rotas.remove(indice);
     }
 
     // Método UC06
