@@ -1,7 +1,6 @@
 package br.edu.ifpb.poo.roteador;
 
 import java.util.Scanner;
-import java.util.Scanner;
 
 public class RoteadorApp {
     public static void main(String[] args) {
@@ -23,7 +22,6 @@ public class RoteadorApp {
                     "-------------------------------------\n" +
                     "Digite a opção que você deseja: ");
             
-            // Tratamento básico para entrada não inteira
             if (!in.hasNextInt()) {
                 System.out.println("Por favor, digite um número.");
                 in.next(); continue;
@@ -52,7 +50,6 @@ public class RoteadorApp {
                     System.out.print("Nome da interface: ");
                     String nomeInterface = in.next();
 
-                    // Usa o alias 'buscarInterface' que criamos no Roteador
                     InterfaceFisica interfac = roteador.buscarInterface(nomeInterface);
 
                     if (interfac != null) {
@@ -78,7 +75,7 @@ public class RoteadorApp {
                         int numRotas = roteador.getRotas().size();
                         System.out.print("Digite o número da rota que deseja alterar (1 a " + numRotas + "): ");
                         int indice = in.nextInt();
-                        in.nextLine(); // Consumir o enter
+                        in.nextLine(); 
 
                         int indiceArray = indice - 1;
 
@@ -89,16 +86,16 @@ public class RoteadorApp {
 
                         Rota rotaAtual = roteador.getRotas().get(indiceArray);
 
-                        // NÃO usamos mais bytesParaString, pois já é String!
-                        System.out.println("Destino atual: " + rotaAtual.getEnderecoDestino());
+                        // CORREÇÃO: Usando IpUtils para converter Byte[] -> String legível
+                        System.out.println("Destino atual: " + IpUtils.bytesParaString(rotaAtual.getEnderecoDestino()));
                         System.out.print("Novo Destino (enter para manter): ");
                         String novoDestino = in.nextLine().trim();
 
-                        System.out.println("Máscara atual: " + rotaAtual.getMascaraDeSubRede());
+                        System.out.println("Máscara atual: " + IpUtils.bytesParaString(rotaAtual.getMascaraDeSubRede()));
                         System.out.print("Nova Mascara (enter para manter): ");
                         String novaMascara = in.nextLine().trim();
 
-                        System.out.println("Gateway atual: " + rotaAtual.getEnderecoGateway());
+                        System.out.println("Gateway atual: " + IpUtils.bytesParaString(rotaAtual.getEnderecoGateway()));
                         System.out.print("Novo Gateway (enter para manter): ");
                         String novoGateway = in.nextLine().trim();
 
@@ -134,10 +131,9 @@ public class RoteadorApp {
 
                         Rota rotaExcluir = roteador.getRotas().get(indiceArray);
 
-                        // Correção: Usando Strings diretas
                         System.out.println("Confirmar a exclusão da Rota: ");
-                        System.out.println("Destino: " + rotaExcluir.getEnderecoDestino());
-                        System.out.println("Máscara: " + rotaExcluir.getMascaraDeSubRede());
+                        System.out.println("Destino: " + IpUtils.bytesParaString(rotaExcluir.getEnderecoDestino()));
+                        System.out.println("Máscara: " + IpUtils.bytesParaString(rotaExcluir.getMascaraDeSubRede()));
                         System.out.println("Interface: " + rotaExcluir.getInterfac().getNome());
 
                         System.out.print("Confirma a exclusão? (S/N): ");
@@ -174,15 +170,18 @@ public class RoteadorApp {
                 case 7 -> {
                      System.out.print("Digite o IP de destino do pacote: ");
                      String ipPacote = in.next();
-                     // Chama o método do roteador que usa a tabela de rotas
+                     
                      Rota melhorRota = roteador.rotearDatagrama(ipPacote);
                      
                      if (melhorRota != null) {
                          System.out.println("\n--- Roteamento ---");
                          System.out.println("Pacote para " + ipPacote);
                          System.out.println("Enviado via interface: " + melhorRota.getInterfac().getNome());
-                         if (melhorRota.getGatewayNumerico() != 0) {
-                             System.out.println("Próximo Salto (Gateway): " + melhorRota.getEnderecoGateway());
+                         
+                         String gw = IpUtils.bytesParaString(melhorRota.getEnderecoGateway());
+                         
+                         if (!gw.equals("0.0.0.0") && !gw.equals("-")) {
+                             System.out.println("Próximo Salto (Gateway): " + gw);
                          } else {
                              System.out.println("Conexão Direta (On-link)");
                          }
@@ -198,7 +197,7 @@ public class RoteadorApp {
                     
                     if (confirmacao.equalsIgnoreCase("S")) {
                         roteador.resetarTabela(); 
-                        System.out.println("Tabela de rotas resetada com sucesso! [cite: 88]");
+                        System.out.println("Tabela de rotas resetada com sucesso!");
                     } else {
                         System.out.println("Operação cancelada.");
                     }

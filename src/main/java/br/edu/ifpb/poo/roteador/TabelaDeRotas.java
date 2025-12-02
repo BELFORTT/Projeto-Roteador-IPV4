@@ -5,65 +5,71 @@ import java.util.List;
 
 public class TabelaDeRotas {
 
-    // A lista de rotas deve ser populada pelos métodos de cadastro
     private final List<Rota> rotas = new ArrayList<>();
 
-    // --- Métodos de Gerenciamento da Tabela ---
-    
     public void addRota(Rota novaRota) {
         this.rotas.add(novaRota);
     }
-    
-    // Método UC03
+
     public List<Rota> getRotas() {
         return rotas;
     }
-    
-    // Método UC08
+
     public void resetarTabela() {
         this.rotas.clear();
     }
-    
-    // --- Algoritmo Longest Match (UC07) ---
 
     /**
-     * Implementa o algoritmo de Longest Match para encontrar a melhor rota.
-     * @param ipDestino O endereço IP de destino do datagrama (ex: "200.129.68.2").
-     * @return A rota mais específica encontrada (o Longest Match), ou null se não houver rotas.
+     * Algoritmo Longest Match ADAPTADO para lógica de Bytes.
      */
     public Rota encontrarMelhorRota(String ipDestino) {
         if (rotas.isEmpty()) {
             return null;
         }
-        
-        long ipDestinoNumerico = IPUtils.ipParaNumerico(ipDestino);
+
+        // 1. Converte o IP de destino para bytes (usando seu IpUtils antigo)
+        byte[] ipDestinoBytes = IpUtils.stringPraBytes(ipDestino);
 
         Rota melhorRota = null;
-        int maxPrefixLength = -1; 
+        int maiorPrefixo = -1; // Guarda o tamanho da máscara vencedora (ex: 24 bits)
 
-        for (Rota rotaCandidata : rotas) {
+        for (Rota rota : rotas) {
+            byte[] mascara = rota.getMascaraDeSubRede();
+            byte[] destinoRota = rota.getEnderecoDestino();
             
-            int prefixLength = rotaCandidata.getPrefixLength(); 
-            long destinoRotaNumerico = rotaCandidata.getDestinoNumerico(); // USANDO O VALOR PRÉ-CALCULADO!
-            
-            // 1. Criar a máscara binária correspondente ao prefixo.
-            long mascaraBinaria = IPUtils.criarMascaraBinaria(prefixLength);
+            boolean combina = true;
 
-            // 2. Aplica a máscara ao IP de destino.
-            long ipDestinoMasked = ipDestinoNumerico & mascaraBinaria;
+            // 2. Verifica se o IP combina com a Rota (fazendo o AND byte a byte)
+            for (int i = 0; i < 4; i++) {
+                // A lógica de rede é: (IP_Destino & Máscara) == Endereço_Rede_Rota
+                if ((ipDestinoBytes[i] & mascara[i]) != (destinoRota[i] & mascara[i])) {
+                    combina = false;
+                    break;
+                }
+            }
 
-            // 3. Verifica se há uma correspondência (Match)
-            if (ipDestinoMasked == destinoRotaNumerico) {
+            // 3. Se combinou, verifica se é a "Melhor Rota" (Prefixo mais longo)
+            if (combina) {
+                int prefixoAtual = contarBitsUm(mascara);
                 
-                // 4. Aplica a regra do Longest Match.
-                if (prefixLength > maxPrefixLength) {
-                    maxPrefixLength = prefixLength;
-                    melhorRota = rotaCandidata;
+                // Se essa máscara for maior que a anterior, ela ganha
+                if (prefixoAtual > maiorPrefixo) {
+                    maiorPrefixo = prefixoAtual;
+                    melhorRota = rota;
                 }
             }
         }
         
-        // Se a rota default (0.0.0.0/0) estiver cadastrada, ela será retornada se nenhuma outra for encontrada.
         return melhorRota;
+    }
+
+    // Método auxiliar para contar quantos bits '1' tem na máscara (ex: 255.255.255.0 = 24 bits)
+    private int contarBitsUm(byte[] mascara) {
+        int bits = 0;
+        for (byte b : mascara) {
+            // Truque do Java para contar bits em um byte
+            bits += Integer.bitCount(b & 0xFF);
+        }
+        return bits;
     }
 }

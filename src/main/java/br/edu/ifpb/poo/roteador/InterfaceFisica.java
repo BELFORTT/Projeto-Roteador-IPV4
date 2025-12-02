@@ -6,14 +6,16 @@ import lombok.Setter;
 @Getter
 @Setter
 public class InterfaceFisica {
-    String nome;
-    String ipString;
+    private String nome;
+    private String ipString;
 
     public InterfaceFisica(String nome, String ipString) {
         this.nome = nome;
-        this.ipString = ip;
-        IPUtils.ipParaNumerico(ipString);
+        this.ipString = ipString; 
+        IpUtils.stringPraBytes(ipString); 
     }
+
+    @Override
     public String toString(){
         return "Interface: "+ nome + " / IP: "+ ipString;
     }
