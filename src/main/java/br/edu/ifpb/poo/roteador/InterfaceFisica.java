@@ -9,7 +9,7 @@ public class InterfaceFisica {
     String nome;
     String ipString;
 
-    public InterfaceFisica(String nome, String ip) {
+    public InterfaceFisica(String nome, String ipString) {
         this.nome = nome;
         this.ipString = ip;
         IPUtils.ipParaNumerico(ipString);

@@ -6,10 +6,12 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Pacote {
-    private String ipDestino;
+    private byte[] ipDestino;
+
+    // Vamos ter que dividir o IP em quatro octetos. Analisar se terá aqui mesmo. 
 
     public Pacote(String ipDestino) {
-        this.ipDestino = ipDestino;
+        this.ipDestino = IpUtils.stringPraBytes(ipDestino);
     }
 
 }
