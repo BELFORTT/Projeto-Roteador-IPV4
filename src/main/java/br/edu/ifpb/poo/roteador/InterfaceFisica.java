@@ -7,10 +7,14 @@ import lombok.Setter;
 @Setter
 public class InterfaceFisica {
     String nome;
-    String ip;
+    String ipString;
 
     public InterfaceFisica(String nome, String ip) {
         this.nome = nome;
-        this.ip = ip;
+        this.ipString = ip;
+        IPUtils.ipParaNumerico(ipString);
+    }
+    public String toString(){
+        return "Interface: "+ nome + " / IP: "+ ipString;
     }
 }
