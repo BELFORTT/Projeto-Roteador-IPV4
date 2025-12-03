@@ -105,9 +105,17 @@ public class Roteador {
         tabela.append("================================================================================\n");
 
         for (Rota rota : tabelaDeRotas.getRotas()) {
-            String destino = IpUtils.bytesParaString(rota.getEnderecoDestino());
-            String mascara = IpUtils.bytesParaString(rota.getMascaraDeSubRede());
-            
+
+            String destino;
+
+            if (modoExibicaoCIDR) {
+                // Se o botão tá ligado, chama o método especial da Rota
+                destino = rota.getDestinoCIDR(); 
+            } else {
+                // Se tá desligado, chama o normal
+                destino = IpUtils.bytesParaString(rota.getEnderecoDestino());
+            }
+            String mascara = IpUtils.bytesParaString(rota.getMascaraDeSubRede());     
             // Tratamento visual do Gateway
             String gwString = IpUtils.bytesParaString(rota.getEnderecoGateway());
             String gateway = gwString.equals("0.0.0.0") ? "-" : gwString;
