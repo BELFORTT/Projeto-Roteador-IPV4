@@ -184,16 +184,20 @@ public class RoteadorApp {
                      }
                 }
                 case 8 -> {
-                    System.out.println("--- Resetar Tabela (UC08) ---");
-                    System.out.println("Tem certeza que deseja apagar TODAS as rotas?");
-                    System.out.print("Digite 'S' para confirmar: ");
-                    String confirmacao = in.next();
-                    
-                    if (confirmacao.equalsIgnoreCase("S")) {
-                        roteador.resetarTabela(); 
-                        System.out.println("Tabela de rotas resetada com sucesso!");
+                    if (roteador.getRotas().isEmpty()) {
+                        System.out.println("Tabela de Rotas vazia");
                     } else {
-                        System.out.println("Operação cancelada.");
+                        System.out.println("--- Resetar Tabela (UC08) ---");
+                        System.out.println("Tem certeza que deseja apagar TODAS as rotas?");
+                        System.out.print("Digite 'S' para confirmar: ");
+                        String confirmacao = in.next();
+                        
+                        if (confirmacao.equalsIgnoreCase("S")) {
+                            roteador.resetarTabela(); 
+                            System.out.println("Tabela de rotas resetada com sucesso!");
+                        } else {
+                            System.out.println("Operação cancelada.");
+                        }
                     }
                 }
 
