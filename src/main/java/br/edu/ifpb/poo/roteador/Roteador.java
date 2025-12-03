@@ -7,14 +7,8 @@ import lombok.Getter;
 
 @Getter
 public class Roteador {
-    
-    // CORREÇÃO: O Roteador DEVE ter uma instância da TabelaDeRotas
-    // para poder usar o algoritmo de Longest Match depois.
     private final TabelaDeRotas tabelaDeRotas;
-    
-    // Lista de interfaces (Lógica antiga que você pediu)
     private final List<InterfaceFisica> interfaces;
-    
     private boolean modoExibicaoCIDR = false; 
 
     public Roteador() {
@@ -51,7 +45,6 @@ public class Roteador {
         return null;
     }
 
-    // Alias
     public InterfaceFisica getInterface(String nome) {
         return buscarInterface(nome);
     }
@@ -135,8 +128,6 @@ public class Roteador {
     // UC04 - Alterar Rota
     public Rota alterarRota(int indiceRota, String novoDestino, String novoGateway, String novaMascara, String nomeNovaInterface) {
         List<Rota> lista = tabelaDeRotas.getRotas();
-        
-        if (indiceRota < 0 || indiceRota >= lista.size()) return null;
 
         Rota rotaAntiga = lista.get(indiceRota);
 
@@ -161,7 +152,7 @@ public class Roteador {
 
         try {
             Rota novaRota = new Rota(destinoString, gatewayString, mascaraString, interfaceFinal);
-            lista.set(indiceRota, novaRota); // Atualiza na lista oficial
+            lista.set(indiceRota, novaRota);
             return novaRota;
         } catch (Exception e) {
             System.out.println("Erro ao alterar: " + e.getMessage());

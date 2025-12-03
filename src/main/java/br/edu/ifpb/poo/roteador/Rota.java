@@ -29,7 +29,7 @@ public class Rota {
 
     public String getDestinoCIDR(){
         int cidr = 0;
-        for (byte b: mascaraDeSubrede){
+        for (byte b: mascaraDeSubRede){
             cidr += Integer.bitCount(b & 0xFF);
         }
         return IpUtils.bytesParaString(enderecoDestino) + "/" + cidr;

@@ -22,12 +22,9 @@ public class RoteadorApp {
                     "-------------------------------------\n" +
                     "Digite a opção que você deseja: ");
             
-            if (!in.hasNextInt()) {
-                System.out.println("Por favor, digite um número.");
-                in.next(); continue;
-            }
+            System.out.print("\nPor favor, digite um número: ");
             int opc = in.nextInt();
-            
+
             switch (opc) {
                 case 1 -> {
                     System.out.print("Digite o nome da interface: ");
@@ -36,9 +33,7 @@ public class RoteadorApp {
                     String ip = in.next();
                     if(roteador.cadastrarInterface(nome, ip)) {
                         System.out.println("Interface cadastrada!");
-                    } else {
-                        System.out.println("Erro: Interface já existe ou IP inválido.");
-                    }
+                    } 
                 }
                 case 2 -> {
                     System.out.print("Destino: ");
@@ -56,9 +51,7 @@ public class RoteadorApp {
                         boolean tudoCerto = roteador.cadastrarRota(destino, gateway, mascara, interfac);
                         if (tudoCerto) {
                             System.out.println("Rota cadastrada com sucesso.");
-                        } else {
-                            System.out.println("Erro: Rota duplicada ou dados inválidos.");
-                        }
+                        } 
                     } else {
                         System.out.println("Interface não encontrada. Cadastre-a primeiro na opção 1.");
                     }
@@ -124,6 +117,7 @@ public class RoteadorApp {
                         in.nextLine(); 
 
                         int indiceArray = indice - 1;
+
                         if (indiceArray < 0 || indiceArray >= numRotas) {
                             System.out.println("Número inválido");
                             break;
@@ -186,7 +180,7 @@ public class RoteadorApp {
                              System.out.println("Conexão Direta (On-link)");
                          }
                      } else {
-                         System.out.println("❌ Host inalcançável (Nenhuma rota encontrada).");
+                         System.out.println("Host inalcançável (Nenhuma rota encontrada).");
                      }
                 }
                 case 8 -> {

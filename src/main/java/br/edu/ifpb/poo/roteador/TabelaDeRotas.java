@@ -19,9 +19,9 @@ public class TabelaDeRotas {
         this.rotas.clear();
     }
 
-    /**
-     * Algoritmo Longest Match ADAPTADO para lógica de Bytes.
-     */
+    
+     // Algoritmo Longest Match ADAPTADO para lógica de Bytes.
+    
     public Rota encontrarMelhorRota(String ipDestino) {
         if (rotas.isEmpty()) {
             return null;
