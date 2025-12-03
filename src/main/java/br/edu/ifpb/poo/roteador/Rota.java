@@ -27,9 +27,15 @@ public class Rota {
         this.interfac = interfac;
     }
 
-    @Override
+    public String getDestinoCIDR(){
+        int cidr = 0;
+        for (byte b: mascaraDeSubrede){
+            cidr += Integer.bitCount(b & 0xFF);
+        }
+        return IpUtils.bytesParaString(enderecoDestino) + "/" + cidr;
+    }
     public String toString() {
-        // Usamos bytesParaString para exibir bonito
+        // Usamos bytesParaString para exibir bonitinho
         String gatewayStr = IpUtils.bytesParaString(enderecoGateway);
         if (gatewayStr.equals("0.0.0.0")) gatewayStr = "On-link";
 
