@@ -7,9 +7,16 @@ public class IpUtils {
         String[] partes = ip.split("\\.");
         byte[] bytes = new byte[4];
         
+        if (partes.length != 4) {
+        throw new IllegalArgumentException("Formato inválido (precisa ser A.B.C.D): " + ip);
+        }
+
         for (int i = 0; i < 4; i++) {
             try {
                 int valorInt = Integer.parseInt(partes[i]);
+                if (valorInt < 0 || valorInt > 255) {
+                throw new IllegalArgumentException("Valor fora do limite (0-255): " + valorInt);
+                }
                 // Isso força o número a caber no byte (mesmo que fique negativo)
                 bytes[i] = (byte) valorInt;
             } catch (NumberFormatException e) {
